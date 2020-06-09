@@ -1,0 +1,28 @@
+.App {
+  /* border: 2px solid red; */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.green {
+  border: 2px solid darkgreen;
+  background-color: green;
+}
+.brown {
+  border: 2px solid brown;
+  background-color: #cb8665;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+.land {
+  width: 40px;
+  height: 40px;
+}
+
+.board {
+  border: 5px solid lightblue;
+}
