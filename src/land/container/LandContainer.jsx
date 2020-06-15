@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Land from "../components/Land";
-import { actions } from "../../redux/reducers/landReducer";
+import { actions } from "../../redux/reducers/boardReducer";
 import {
   selectors,
   actions as boardActions,

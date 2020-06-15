@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../App.css";
 import { actions } from "../../redux/reducers/boardReducer";
-import { actions as landAction } from "../../redux/reducers/landReducer";
+
 import { useDispatch } from "react-redux";
 import { Button } from "react-bootstrap";
 
@@ -19,7 +19,7 @@ export default function MenuLayout({ children }) {
     console.log("ACTION", actions.setDimension(value));
     dispatch(actions.setFirstClick(false),);
     dispatch(actions.setDimension(value),);
-    dispatch(landAction.setVisibilityBoard(value));
+    dispatch(actions.setVisibilityBoard(value));
   };
 
   return (
