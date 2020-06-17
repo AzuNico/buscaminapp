@@ -20,48 +20,35 @@ export default function MenuLayout({ children }) {
 
   return (
     <div
-      className="App"
-      style={{ display: "flex", justifyContent: "space-evenly" }}
+      style={{
+        textAlign: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-around",
+        flexDirection: "column",
+      }}
     >
-      <div
-        style={{
-          textAlign: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-around",
-          flexDirection: "column",
-        }}
-      >
-        <form>
-          <label htmlFor="dimension">Dimensión del tablero </label>
-          <br />
-          <input
-            onChange={(evt) => {
-              handleChange(evt.target.value);
-            }}
-            id="dimension"
-            type="number"
-            value={value}
-            min={2}
-            max={10}
-            step={2}
-            precision={1}
-            style={{
-              height: 40,
-              width: 50,
-              fontSize: 18,
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          />
-          <br />
-          <br />
-          <Button onClick={() => handleClick()} variant="primary">
-            Generar Tablero
-          </Button>
-        </form>
-      </div>
-      {children}
+      <form>
+        <label htmlFor="dimension">Dimensión del tablero </label>
+        <br />
+        <select
+          defaultValue={value}
+          onChange={(evt) => {
+            handleChange(evt.target.value);
+          }}
+        >
+          <option value="10">10</option>
+          <option value="8">8</option>
+          <option value="6">6</option>
+          <option value="4">4</option>
+          <option value="2">2</option>
+        </select>
+        <br />
+        <br />
+        <Button onClick={() => handleClick()} variant="primary">
+          Generar Tablero
+        </Button>
+      </form>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import BoardContainer from "./board/container/BoardContainer";
-import MenuLayout from "./layout/menu/MenuLayout";
 import { selectors, actions } from "./redux/reducers/boardReducer";
 import { useSelector, useDispatch } from "react-redux";
 import swal from "sweetalert";
@@ -30,11 +29,7 @@ function App() {
     }
   }, [youLose]);
 
-  return (
-    <MenuLayout>
-      <BoardContainer />
-    </MenuLayout>
-  );
+  return <BoardContainer />;
 }
 
 export default App;
