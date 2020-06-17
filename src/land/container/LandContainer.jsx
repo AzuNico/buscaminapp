@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Land from "../components/Land";
-import { actions } from "../../redux/reducers/boardReducer";
-import {
-  selectors,
-  actions as boardActions,
-} from "../../redux/reducers/boardReducer";
+import { selectors, actions } from "../../redux/reducers/boardReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function LandContainer({ bomb, isOpen, position }) {
   const [flag, setFlag] = useState(false);
+  const [lose, setLose] = useState(false);
   const dispatch = useDispatch();
   const isFirstClick = useSelector(selectors.isFirstClick);
 
@@ -19,28 +16,25 @@ export default function LandContainer({ bomb, isOpen, position }) {
   }, [isFirstClick]);
 
   const hanldeClick = () => {
-    const open = {
-      position,
-      open: true,
-    };
-    console.log("FIRST CLICK?", isFirstClick);
-
     if (isFirstClick === false) {
-      dispatch(boardActions.setFirstClick(true, position));
-      dispatch(boardActions.setBombs());
+      dispatch(actions.setFirstClick(true, position));
+      dispatch(actions.setBombs(position));
     }
-    dispatch(actions.showLand(open));
 
-    
+    dispatch(actions.showLand(position));
 
+    if (bomb === 9) {
+      dispatch(actions.gameOver(position));
+      setLose(true);
+    }
   };
 
   const handleRightClick = (e) => {
     e.preventDefault();
     setFlag(!flag);
     if (isFirstClick === false) {
-      dispatch(boardActions.setFirstClick(true, position));
-      dispatch(boardActions.setBombs());
+      dispatch(actions.setFirstClick(true, position));
+      dispatch(actions.setBombs());
     } else {
       setFlag(!flag);
     }
@@ -50,6 +44,7 @@ export default function LandContainer({ bomb, isOpen, position }) {
     <>
       <Land
         bomb={bomb}
+        lose={lose}
         flag={flag}
         open={isOpen}
         onClick={() => hanldeClick()}

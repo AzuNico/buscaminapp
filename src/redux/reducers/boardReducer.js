@@ -1,61 +1,79 @@
 import boardGenerator from "../../utils/boardGenerator";
 import putBombs from "../../utils/putBombs";
 import uncoverCells from "../../utils/uncoverCells";
+import gameOver from "../../utils/gameOver";
 
 export const types = {
-  setDimension: "SET_DIMENSION",
+  initBoard: "INIT_BOARD",
   setBombs: "SET_BOMBS",
   setFirstClick: "SET_FIRST_CLICK",
-  setVisibilityBoard: "SET_VISIBILITY_BOARD",
   showLand: "SHOW_LAND",
+  gameOver: "GAME_OVER",
+  youWin: "YOU_WIN",
 };
 
-const initialState = { firstClick: false };
+const initialState = {};
 
 export default (state = initialState, action = {}) => {
-  const { dimensionBoard, isFirstClick, open, value } = action;
+  const {
+    dimensionBoard,
+    isFirstClick,
+    positions,
+    boom,
+    firstClickPosition,
+    firstClickPositionBomb
+  } = action;
   switch (action.type) {
-    case types.setDimension:
-      const fila = new Array(Number(dimensionBoard));
-      const board = boardGenerator(fila, 0);
+    case types.initBoard:
       return {
         ...state,
         dimensionBoard: Number(dimensionBoard),
-        board,
+        board: boardGenerator(dimensionBoard, 0),
+        boardVisibility: boardGenerator(dimensionBoard, false),
+        firstClick: false,
+        firstClickPosition: null,
+        gameOver: false,
+        win: false,
       };
+
     case types.setFirstClick:
-      return { ...state, firstClick: isFirstClick };
+      console.log("first clicl position set firstClick", firstClickPosition);
+      return {
+        ...state,
+        firstClick: isFirstClick,
+        firstClickPosition,
+      };
+
     case types.setBombs:
-      console.log(types.setBombs);
       const oldBoard = [...state.board];
       const bombs = state.dimensionBoard;
-      return { ...state, board: putBombs(oldBoard, bombs) };
-    case types.setVisibilityBoard:
-      const lenght = Number(value);
-      const row = new Array(lenght);
-      const boardVisibility = boardGenerator(row, false);
-      return { ...state, boardVisibility };
+      console.log("first clicl position set bombs", firstClickPositionBomb);
+      
+      return { ...state, board: putBombs(oldBoard, bombs, firstClickPositionBomb) };
+
     case types.showLand:
-      const indexX = open.position[0];
-      const indexY = open.position[1];
+      const indexX = positions[0];
+      const indexY = positions[1];
       const newVisibilityBoard = uncoverCells(
         [...state.board],
         [...state.boardVisibility],
         indexX,
         indexY
-      )
-      console.log("NEW VISIBILITY BOARD", newVisibilityBoard);
-      
+      );
       return {
         ...state,
-        // boardVisibility: state.boardVisibility.map((innerArray, index) => {
-        //   if (index === indexX)
-        //     return innerArray.map((item, index) => {
-        //       if (index === indexY) return open.open;
-        //       return item;
-        //     });
-        //   return innerArray;
-        boardVisibility: newVisibilityBoard
+        boardVisibility: newVisibilityBoard,
+      };
+
+    case types.gameOver:
+      const boardReveal = [...state.boardVisibility].map((innerArray) =>
+        innerArray.map((item) => (item = true))
+      );
+      return {
+        ...state,
+        boardVisibility: boardReveal,
+        gameOver: true,
+        boomPosition: boom,
       };
 
     default:
@@ -64,31 +82,39 @@ export default (state = initialState, action = {}) => {
 };
 
 export const actions = {
-  setDimension: (dimensionBoard) => ({
-    type: types.setDimension,
+  initBoard: (dimensionBoard) => ({
+    type: types.initBoard,
     dimensionBoard,
   }),
-  setFirstClick: (isFirstClick, positionFirstClick) => ({
+  setFirstClick: (isFirstClick, firstClickPosition) => ({
     type: types.setFirstClick,
     isFirstClick,
-    positionFirstClick,
+    firstClickPosition,
   }),
-  setBombs: () => ({
+  setBombs: (firstClickPositionBomb) => ({
     type: types.setBombs,
+    firstClickPositionBomb
   }),
-  setVisibilityBoard: (value) => ({
-    type: types.setVisibilityBoard,
-    value,
-  }),
-  showLand: (open) => ({
+  showLand: (arr) => ({
     type: types.showLand,
-    open,
+    positions: arr,
+  }),
+  gameOver: (position) => ({
+    type: types.gameOver,
+    boom: position,
+  }),
+  youWin: () => ({
+    type: types.youWin,
   }),
 };
 
 export const selectors = {
   getDimension: ({ boardReducer }) => boardReducer.dimensionBoard,
   getBoard: ({ boardReducer }) => boardReducer.board,
+  getYouWin: ({ boardReducer }) => boardReducer.youWin,
+  getGameOver: ({ boardReducer }) => boardReducer.gameOver,
+  getBoomPosition: ({ boardReducer }) => boardReducer.boomPosition,
   isFirstClick: ({ boardReducer }) => boardReducer.firstClick,
+  getFirstClickPosition: ({ boardReducer }) => boardReducer.firstClickPosition,
   getBoardVisibility: ({ boardReducer }) => boardReducer.boardVisibility,
 };

@@ -9,7 +9,6 @@ export default function BoardContainer() {
   const dimension = useSelector(selectors.getDimension);
   const board = useSelector(selectors.getBoard);
   const visibilityBoard = useSelector(selectors.getBoardVisibility);
-  console.log("VISBILITY BOARD", visibilityBoard);
 
   return (
     <div>

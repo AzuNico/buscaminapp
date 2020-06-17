@@ -1,6 +1,6 @@
 import { array, number } from "prop-types";
 
-const putBombs = (board = array, bombs = number) => {
+const putBombs = (board = array, bombs = number, firstClickPosition) => {
   let fila = 0;
   let columna = 0;
   let lenght = board.length;
@@ -9,7 +9,10 @@ const putBombs = (board = array, bombs = number) => {
     do {
       fila = Math.round(Math.random() * (lenght - 1));
       columna = Math.round(Math.random() * (lenght - 1));
-    } while (board[fila][columna] === 9); //bomba
+    } while (
+      board[fila][columna] === 9 ||
+      (fila === firstClickPosition[0] && columna === firstClickPosition[1])
+    ); //si ya puse una bomba o si es el primer click busco otra celda disponible para poner una bomba 
 
     board[fila][columna] = 9; //pongo bomba
 

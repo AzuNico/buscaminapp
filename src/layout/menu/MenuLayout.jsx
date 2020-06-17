@@ -12,14 +12,10 @@ export default function MenuLayout({ children }) {
 
   const handleChange = (val) => {
     setValue(val);
-    console.log("VALUE", value);
   };
 
   const handleClick = () => {
-    console.log("ACTION", actions.setDimension(value));
-    dispatch(actions.setFirstClick(false),);
-    dispatch(actions.setDimension(value),);
-    dispatch(actions.setVisibilityBoard(value));
+    dispatch(actions.initBoard(value));
   };
 
   return (
