@@ -1,6 +1,7 @@
 import boardGenerator from "../../utils/boardGenerator";
 import putBombs from "../../utils/putBombs";
 import uncoverCells from "../../utils/uncoverCells";
+import countOpenCells from "../../utils/countOpenCells";
 
 export const types = {
   initBoard: "INIT_BOARD",
@@ -21,7 +22,6 @@ export default (state = initialState, action = {}) => {
     boom,
     firstClickPosition,
     firstClickPositionBomb,
-    openCells,
   } = action;
   switch (action.type) {
     case types.initBoard:
@@ -62,10 +62,15 @@ export default (state = initialState, action = {}) => {
         indexX,
         indexY
       );
+
+      const cellsOpened = countOpenCells(newVisibilityBoard);
+      console.log("cellsOpened", cellsOpened);
+
       return {
         ...state,
         boardVisibility: newVisibilityBoard,
-        openCells: state.openCells + openCells,
+        ...state,
+        openCells: cellsOpened,
       };
 
     case types.gameOver:
@@ -104,10 +109,9 @@ export const actions = {
     type: types.setBombs,
     firstClickPositionBomb,
   }),
-  showLand: (arr, openCells) => ({
+  showLand: (arr) => ({
     type: types.showLand,
     positions: arr,
-    openCells,
   }),
   gameOver: (position) => ({
     type: types.gameOver,

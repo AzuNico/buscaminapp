@@ -22,7 +22,7 @@ export default function LandContainer({ bomb, isOpen, position }) {
       dispatch(actions.setBombs(position));
     }
 
-    dispatch(actions.showLand(position, 1));
+    dispatch(actions.showLand(position));
 
     if (bomb === 9) {
       dispatch(actions.gameOver(position));

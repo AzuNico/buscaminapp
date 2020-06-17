@@ -18,23 +18,25 @@ export default function Land({
         <div className="land brown">
           {bomb === 9 ? (
             lose ? (
-              <img src={exploIcon} alt="explosion" width={30} />
+              <img src={exploIcon} alt="explosion" width={25} />
             ) : (
-              <img src={bombIcon} alt="bomb" width={30} />
+              <img src={bombIcon} alt="bomb" width={25} />
             )
           ) : (
-            <p style={{ margin: "auto" }}>{bomb === 0 ? "" : bomb}</p>
+            <p style={{ margin: "auto" , fontWeight: "bold"}}>{bomb === 0 ? "" : bomb}</p>
           )}
         </div>
       ) : win ? (
-        <div className="land green " />
+        <div className="land green " >
+          <img src={bombIcon} alt="bomb" width={25} />
+        </div>
       ) : flag ? (
         <div
           className="land green "
           onClick={onClick}
           onContextMenu={onMenuContext}
         >
-          <img src={flagIcon} alt="flag" width={30} />
+          <img src={flagIcon} alt="flag" width={25} />
         </div>
       ) : (
         <div
