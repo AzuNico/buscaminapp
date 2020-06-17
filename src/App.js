@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import BoardContainer from "./board/container/BoardContainer";
 import MenuLayout from "./layout/menu/MenuLayout";

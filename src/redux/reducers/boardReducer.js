@@ -1,7 +1,6 @@
 import boardGenerator from "../../utils/boardGenerator";
 import putBombs from "../../utils/putBombs";
 import uncoverCells from "../../utils/uncoverCells";
-import gameOver from "../../utils/gameOver";
 
 export const types = {
   initBoard: "INIT_BOARD",
