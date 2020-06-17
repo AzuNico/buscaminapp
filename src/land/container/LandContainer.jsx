@@ -8,6 +8,7 @@ export default function LandContainer({ bomb, isOpen, position }) {
   const [lose, setLose] = useState(false);
   const dispatch = useDispatch();
   const isFirstClick = useSelector(selectors.isFirstClick);
+  const youWin = useSelector(selectors.getYouWin);
 
   useEffect(() => {
     if (isFirstClick === false) {
@@ -21,7 +22,7 @@ export default function LandContainer({ bomb, isOpen, position }) {
       dispatch(actions.setBombs(position));
     }
 
-    dispatch(actions.showLand(position));
+    dispatch(actions.showLand(position, 1));
 
     if (bomb === 9) {
       dispatch(actions.gameOver(position));
@@ -34,7 +35,7 @@ export default function LandContainer({ bomb, isOpen, position }) {
     setFlag(!flag);
     if (isFirstClick === false) {
       dispatch(actions.setFirstClick(true, position));
-      dispatch(actions.setBombs());
+      dispatch(actions.setBombs(position));
     } else {
       setFlag(!flag);
     }
@@ -44,6 +45,7 @@ export default function LandContainer({ bomb, isOpen, position }) {
     <>
       <Land
         bomb={bomb}
+        win={youWin}
         lose={lose}
         flag={flag}
         open={isOpen}

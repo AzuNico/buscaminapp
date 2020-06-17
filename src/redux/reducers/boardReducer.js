@@ -21,7 +21,8 @@ export default (state = initialState, action = {}) => {
     positions,
     boom,
     firstClickPosition,
-    firstClickPositionBomb
+    firstClickPositionBomb,
+    openCells,
   } = action;
   switch (action.type) {
     case types.initBoard:
@@ -30,14 +31,15 @@ export default (state = initialState, action = {}) => {
         dimensionBoard: Number(dimensionBoard),
         board: boardGenerator(dimensionBoard, 0),
         boardVisibility: boardGenerator(dimensionBoard, false),
+        boomPosition: null,
         firstClick: false,
         firstClickPosition: null,
         gameOver: false,
-        win: false,
+        youWin: false,
+        openCells: 0,
       };
 
     case types.setFirstClick:
-      console.log("first clicl position set firstClick", firstClickPosition);
       return {
         ...state,
         firstClick: isFirstClick,
@@ -47,9 +49,10 @@ export default (state = initialState, action = {}) => {
     case types.setBombs:
       const oldBoard = [...state.board];
       const bombs = state.dimensionBoard;
-      console.log("first clicl position set bombs", firstClickPositionBomb);
-      
-      return { ...state, board: putBombs(oldBoard, bombs, firstClickPositionBomb) };
+      return {
+        ...state,
+        board: putBombs(oldBoard, bombs, firstClickPositionBomb),
+      };
 
     case types.showLand:
       const indexX = positions[0];
@@ -63,6 +66,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         boardVisibility: newVisibilityBoard,
+        openCells: state.openCells + openCells,
       };
 
     case types.gameOver:
@@ -74,6 +78,12 @@ export default (state = initialState, action = {}) => {
         boardVisibility: boardReveal,
         gameOver: true,
         boomPosition: boom,
+        youWin: false,
+      };
+    case types.youWin:
+      return {
+        ...state,
+        youWin: true,
       };
 
     default:
@@ -93,11 +103,12 @@ export const actions = {
   }),
   setBombs: (firstClickPositionBomb) => ({
     type: types.setBombs,
-    firstClickPositionBomb
+    firstClickPositionBomb,
   }),
-  showLand: (arr) => ({
+  showLand: (arr, openCells) => ({
     type: types.showLand,
     positions: arr,
+    openCells,
   }),
   gameOver: (position) => ({
     type: types.gameOver,
@@ -117,4 +128,5 @@ export const selectors = {
   isFirstClick: ({ boardReducer }) => boardReducer.firstClick,
   getFirstClickPosition: ({ boardReducer }) => boardReducer.firstClickPosition,
   getBoardVisibility: ({ boardReducer }) => boardReducer.boardVisibility,
+  getOpenCells: ({ boardReducer }) => boardReducer.openCells,
 };
